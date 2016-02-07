@@ -1,0 +1,255 @@
+<html>
+<body>
+<script>
+ var divAccept,divReject,divMessage;
+(function(){
+var intervalid = null;
+var animationTimeout= null;
+var div = document.createElement('div');
+div.id="maindiv";
+div.setAttribute("width", "100");
+div.setAttribute("height", "22");
+document.body.appendChild(div);
+
+var heading = document.createElement('h2');
+div.appendChild(heading);
+var txt = document.createTextNode("Incoming call from sumit");
+heading.appendChild(txt);
+
+
+var x = document.createElement("IMG");
+    x.id="callIcon";
+    x.setAttribute("src", "callIcon.png");
+    x.setAttribute("width", "50");
+    x.setAttribute("height", "32");
+    x.setAttribute("alt", "The Pulpit Rock");
+	x.setAttribute("border", "7");
+    div.appendChild(x);
+document.getElementById("callIcon").style.margin ="15% 19%";
+document.getElementById("callIcon").style.borderRadius ="50%";
+var node = document.getElementsByTagName("div")[0];
+var longpress = false;
+var presstimer = null;
+var longtarget = null;
+
+var cancel = function(e) {
+	
+	//
+    if(presstimer !== null) {
+	var el = document.getElementsByClassName('options');
+	for(var i=0 ,len=el.length; i<len ;++i)
+	node.removeChild(el[i]);
+	
+	
+        clearTimeout(presstimer);
+		//intervalid = setInterval(frame, 500); 
+		animationTimeout=setTimeout(startCycle, 100);
+		x.setAttribute("width", "50");
+    x.setAttribute("height", "32");
+	x.style.borderColor ="#000";
+	//node.removeChild(node.childNodes[2]);
+	//node.removeChild(node.childNodes[3]);
+    //node.removeChild(node.childNodes[4]);
+    }
+	 
+	//var callList = document.getElementById("maindiv");
+	
+ 
+
+};
+
+var click = function(e) {
+
+    if(presstimer !== null) {
+        clearTimeout(presstimer);
+    }
+
+    
+    if(longpress) {
+	x.setAttribute("width", "70");
+    x.setAttribute("height", "42");
+        return false;
+    }
+    
+    alert(" Please press  and hold");
+};
+
+var start = function(e) {
+    console.log(e);
+    
+    if(e.type === "click" && e.button !== 0) {
+        return;
+    }
+   
+    longpress = false;
+    
+   // this.classList.add("longpress");
+    
+    presstimer = setTimeout(function() {
+       // alert("long click");
+      clearInterval(intervalid);
+	  x.setAttribute("width", "70");
+    x.setAttribute("height", "42");
+	 x.style.borderColor = "red";
+		
+		divAccept = document.createElement("div");
+		divAccept.setAttribute("class","options");
+		divAccept.id ="accept";
+		var txtAccept = document.createTextNode("Accept");
+		divAccept.appendChild(txtAccept);	
+        div.appendChild(divAccept);		
+	document.getElementById("accept").style.margin ="-18% 5% ";
+
+		divReject = document.createElement("div");
+		divReject.setAttribute("class","options");
+		divReject.id ="reject";
+		var txtReject = document.createTextNode("Reject");
+		divReject.appendChild(txtReject);
+		div.appendChild(divReject);
+document.getElementById("reject").style.margin ="17% 35%";
+
+		divMessage = document.createElement("div");
+		divMessage.setAttribute("class","options");
+		divMessage.id ="sendmessage";
+		var txtMessage = document.createTextNode("Send Message");
+		divMessage.appendChild(txtMessage);
+		div.appendChild(divMessage);
+	document.getElementById("sendmessage").style.margin ="-30% 19%";
+
+	//	arrow();
+		//arrowReject();
+		//arrowMessage();
+		
+		
+	
+        longpress = true;
+    }, 1000);
+    
+    return false;
+};
+
+var span = document.createElement("span");
+span.id="dot";
+heading.appendChild(span);
+var dots= window.setInterval(function(){
+var dot = document.getElementById("dot");
+var dotcolor = getRandomColor();
+if(dot.innerHTML.length>3)
+dot.innerHTML="";
+else
+dot.innerHTML+=".";
+dot.style.color=dotcolor;
+},500);
+var nodeImg = document.getElementsByTagName("img")[0];
+nodeImg.addEventListener("mousedown", start);
+//node.addEventListener("touchstart", start);
+nodeImg.addEventListener("click", click);
+nodeImg.addEventListener("mouseout", cancel);
+
+
+  var left = 0;
+  
+ /* function frame() {
+
+    left=parseInt(left)+20;  // update parameters
+    //x.style.left = left + 'px'; // show frame
+	var w = 50 ;
+	var h = 32;
+	w = parseInt(w)+parseInt(left);
+	h = parseInt(h)+parseInt(left);
+    x.setAttribute("width", w);
+    x.setAttribute("height", h);
+    if (left == 80)  // check finish condition
+	left=0; 
+      //clearInterval(id);
+	  
+  }*/
+  //  intervalid = setInterval(frame, 500); 
+  function startCycle(){
+  if(animationTimeout !== null) {
+        clearTimeout(animationTimeout);
+		clearInterval(intervalid);
+		}
+  intervalid = setInterval(function(){
+   left=parseInt(left)+20;
+ // update parameters
+    //x.style.left = left + 'px'; // show frame
+	var w = 50 ;
+	var h = 32;
+	w = parseInt(w)+parseInt(left);
+	h = parseInt(h)+parseInt(left);
+    x.setAttribute("width", w);
+    x.setAttribute("height", h);
+	var colornew = getRandomColor();
+	x.style.borderColor=colornew;
+    if (left == 80)  // check finish condition
+	left=0; 
+  }, 500); 
+  }
+  startCycle();
+// draw every 10ms
+
+} ());
+
+function getRandomColor(){
+var letters = "1234567890ABCDEF".split('');
+var color="#";
+for(var i= 0 ; i<6 ; ++i)
+color += letters[Math.floor(Math.random() * 16)];
+
+return color;
+}
+function arrow(){
+var spanAccept = document.createElement("span");
+spanAccept.id = "arrow";
+divAccept.appendChild(spanAccept);
+var dots = window.setInterval(function(){
+var arrowAccept = document.getElementById(arrow);
+var dotcolor = getRandomColor();
+if(arrow.innerHTML.length > 3)
+arrow.innerHTML = "";
+else
+{
+arrow.innerHTML += "<";
+arrow.style.color = dotcolor ;
+} 
+},500);
+}
+
+function arrowReject(){
+var spanReject = document.createElement("span");
+spanReject.id = "arrowReject";
+divReject.appendChild(spanReject);
+var dots = window.setInterval(function(){
+var arrowRejectDiv = document.getElementById(arrowReject);
+var dotcolor = getRandomColor();
+if(arrowRejectDiv.innerHTML.length > 3)
+arrowRejectDiv.innerHTML = "";
+else
+{
+arrowRejectDiv.innerHTML += "<";
+arrowRejectDiv.style.color = dotcolor ;
+} 
+},500);
+}
+
+function arrowMessage(){
+var spanMessage = document.createElement("span");
+spanMessage.id = "arrowMessage";
+divMessage.appendChild(spanMessage);
+var dots = window.setInterval(function(){
+var arrowMessageDiv = document.getElementById(arrowMessage);
+var dotcolor = getRandomColor();
+if(arrowMessageDiv.innerHTML.length > 3)
+arrowMessageDiv.innerHTML = "";
+else
+{
+arrowMessageDiv.innerHTML += "<";
+arrowMessageDiv.style.color = dotcolor ;
+} 
+},500);
+}
+
+</script>
+</body>
+</html>
